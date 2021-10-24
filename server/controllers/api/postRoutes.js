@@ -14,4 +14,23 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/create", async (req, res) => {
+  console.log("POST /api/posts/create");
+
+  try {
+    const post = await Post.create({
+      name: req.body.name,
+      user_id: req.session.user_id,
+      price: req.body.price,
+      descriprion: req.body.description,
+      image: req.body.image,
+    });
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+});
+
 module.exports = router;
