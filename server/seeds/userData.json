@@ -1,0 +1,14 @@
+[
+  {
+    "user_name": "ccardinale98",
+    "email": "ccardinale98@gmail.com",
+    "password": "password123",
+    "image": "camer.png"
+  },
+  {
+    "user_name": "demouser",
+    "email": "demo@email.com",
+    "password": "password123",
+    "image": "demo.png"
+  }
+]
