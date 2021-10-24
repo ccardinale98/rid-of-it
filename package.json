@@ -1,24 +1,19 @@
 {
-  "homepage": "http://ccardinale98.github.io/rid-of-it",
-  "main": "node_modules/expo/AppEntry.js",
+  "name": "rid-of-it",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm start\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
   },
-  "dependencies": {
-    "expo": "~43.0.0",
-    "expo-status-bar": "~1.1.0",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "0.64.2",
-    "react-native-web": "0.17.1"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "gh-pages": "^3.2.3"
-  },
-  "private": true
+    "concurrently": "^5.1.0"
+  }
 }
