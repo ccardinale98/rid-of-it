@@ -1,0 +1,23 @@
+[
+  {
+    "user_id": 1,
+    "name": "iPhone 11",
+    "price": 400,
+    "description": "This is a good phone",
+    "image": "iphone.png"
+  },
+  {
+    "user_id": 1,
+    "name": "Gaming PC",
+    "price": 1100,
+    "description": "RTX 3070, Ryzen 7 3700x",
+    "image": "pc.png"
+  },
+  {
+    "user_id": 2,
+    "name": "Couch",
+    "price": 150,
+    "description": "Very comfortable couch",
+    "image": "couch.png"
+  }
+]

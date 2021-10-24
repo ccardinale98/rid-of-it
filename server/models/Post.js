@@ -19,6 +19,10 @@ Bid.init(
         key: "id",
       },
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
