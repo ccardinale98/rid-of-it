@@ -45,13 +45,31 @@ router.delete("/delete/:id", async (req, res) => {
 
     if (!post) {
       res.status(404).json({
-        message: "No project found with this id!",
+        message: "No post found with this id!",
       });
       return;
     }
 
     res.status(200).json(post);
   } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  console.log("GET /api/posts/:id");
+
+  try {
+    const post = await Post.findByPk(req.params.id, {});
+
+    if (!post) {
+      res.status(404).json({ message: "No post with this ID" });
+      return;
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
