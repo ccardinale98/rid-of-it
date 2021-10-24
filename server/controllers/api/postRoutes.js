@@ -33,4 +33,27 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", async (req, res) => {
+  console.log("DELETE /api/posts/delete/:id");
+
+  try {
+    const post = await Post.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!post) {
+      res.status(404).json({
+        message: "No project found with this id!",
+      });
+      return;
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
