@@ -8,7 +8,7 @@ class User extends Model {
   }
 }
 
-Poster.init(
+User.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -58,7 +58,7 @@ Poster.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: "poster",
+    modelName: "user",
   }
 );
 
