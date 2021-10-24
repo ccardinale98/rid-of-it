@@ -1,5 +1,6 @@
 {
   "homepage": "http://ccardinale98.github.io/rid-of-it",
+  "proxy": "https://rid-of-it.herokuapp.com/",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
