@@ -1,6 +1,16 @@
 const router = require("express").Router();
 const { User } = require("../../models");
 
+router.get("/", async (req, res) => {
+  console.log("GET /api/registration/");
+
+  if (req.session.logged_in == true) {
+    res.json({ user: req.session.user });
+  } else {
+    res.json({ user: "none" });
+  }
+});
+
 router.post("/login", async (req, res) => {
   console.log("POST /api/registration/login");
 
