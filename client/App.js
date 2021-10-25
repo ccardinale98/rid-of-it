@@ -1,46 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "./Home";
 
-const x = 1;
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  console.log(data);
-
-  useEffect(() => {
-    fetch("https://rid-of-it.herokuapp.com/api/registration/")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  console.log(data);
-  if (data.user == "none") {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Rid of It</Text>
-        <View style={styles.buttons}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
-          </View>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
-          </View>
-        </View>
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    );
-  } else {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text>A user is logged in.</Text>
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    );
-  }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -49,31 +27,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#CAEBF2",
     alignItems: "center",
     justifyContent: "center",
-  },
-  title: {
-    flex: 1,
-    fontSize: 60,
-    color: "#A9A9A9",
-    paddingTop: 50,
-  },
-  buttons: {
-    flex: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-  },
-  button: {
-    width: "70%",
-    height: "17%",
-    borderRadius: 25,
-    backgroundColor: "#FF3B3F",
-    color: "#FF3B3F",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 25,
   },
 });
