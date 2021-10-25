@@ -16,7 +16,7 @@ import Home from "./Home";
 export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [current, getCurrent] = useState([]);
+  const [current, getCurrent] = useState();
 
   function currentUser() {
     fetch("https://rid-of-it.herokuapp.com/api/registration/")
@@ -27,8 +27,8 @@ export default function Dashboard({ navigation }) {
           console.log("no user");
           navigation.navigate("Home");
         } else {
-          console.log(user, "27");
-          getCurrent(user);
+          console.log(user.user, "27");
+          getCurrent(user.user);
           console.log(current, "30");
         }
       })
@@ -53,14 +53,19 @@ export default function Dashboard({ navigation }) {
 
   function renderPosts({ item }) {
     console.log(item.name);
-    return (
-      <View>
-        <Image source={{ uri: item.image }} style={{ width: 50, height: 50 }} />
-        <Text>{item.name}</Text>
-        <Text>{item.description}</Text>
-        <Text>${item.price}</Text>
-      </View>
-    );
+    if (item.user_id != current) {
+      return (
+        <View>
+          <Image
+            source={{ uri: item.image }}
+            style={{ width: 50, height: 50 }}
+          />
+          <Text>{item.name}</Text>
+          <Text>{item.description}</Text>
+          <Text>${item.price}</Text>
+        </View>
+      );
+    }
   }
 
   return (
