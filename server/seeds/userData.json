@@ -4,13 +4,13 @@
     "user_name": "ccardinale98",
     "email": "ccardinale98@gmail.com",
     "password": "password123",
-    "image": "camer.png"
+    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107246/rid-of-it/79952230_vgh2fc.jpg"
   },
   {
     "id": 2,
     "user_name": "demouser",
     "email": "demo@email.com",
     "password": "password123",
-    "image": "demo.png"
+    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107270/rid-of-it/Profile_avatar_placeholder_large_h2l2yr.png"
   }
 ]

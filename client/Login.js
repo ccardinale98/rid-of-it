@@ -11,6 +11,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import Home from "./Home";
+import Dashboard from "./Dashboard";
 
 export default function Login({ navigation }) {
   const { control, handleSubmit, errors, reset } = useForm({
@@ -19,6 +20,15 @@ export default function Login({ navigation }) {
       password: "",
     },
   });
+
+  function loginUser(user) {
+    console.log(user);
+    if (user.message == "Login Succesful") {
+      navigation.navigate("Dashboard");
+    } else {
+      console.log("no user");
+    }
+  }
 
   function submit(data) {
     console.log(data);
@@ -35,10 +45,8 @@ export default function Login({ navigation }) {
       }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((user) => loginUser(user))
       .catch((err) => console.log(err));
-
-    navigation.navigate("Home");
   }
 
   return (

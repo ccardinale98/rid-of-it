@@ -51,13 +51,7 @@ export default function Home({ navigation }) {
       </SafeAreaView>
     );
   } else {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text>A user is logged in.</Text>
-        <Button title="logout" onPress={() => logout()} />
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    );
+    return <View>{navigation.navigate("Dashboard")}</View>;
   }
 }
 
