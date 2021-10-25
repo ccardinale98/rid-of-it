@@ -1,8 +1,10 @@
+import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import Login from "./Login";
 
-export default function Login() {
+export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   console.log(data);
@@ -22,7 +24,12 @@ export default function Login() {
         <Text style={styles.title}>Rid of It</Text>
         <View style={styles.buttons}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
+            <Text
+              style={styles.buttonText}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Login
+            </Text>
           </View>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Signup</Text>
