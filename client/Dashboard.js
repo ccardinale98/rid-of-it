@@ -11,8 +11,9 @@ import {
   FlatList,
   Image,
 } from "react-native";
+import Home from "./Home";
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [current, getCurrent] = useState([]);
@@ -24,12 +25,14 @@ export default function Dashboard() {
         console.log(user, "24");
         if (user.user == "none") {
           console.log("no user");
+          navigation.navigate("Home");
         } else {
           console.log(user, "27");
           getCurrent(user);
           console.log(current, "30");
         }
-      });
+      })
+      .catch((err) => console.log(err));
   }
 
   function getPosts() {
