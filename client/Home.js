@@ -19,17 +19,20 @@ function logout() {
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     fetch("https://rid-of-it.herokuapp.com/api/registration/")
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        console.log(data, "28");
+        setData(data);
+      })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, []);
 
-  console.log(data);
+  console.log(data.user, "35");
   if (data.user == "none") {
     return (
       <SafeAreaView style={styles.container}>
@@ -51,6 +54,8 @@ export default function Home({ navigation }) {
       </SafeAreaView>
     );
   } else {
+    // console.log(data);
+    console.log("USER SIGNED IN --------------------------------");
     return <View>{navigation.navigate("Dashboard")}</View>;
   }
 }

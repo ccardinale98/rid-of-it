@@ -15,12 +15,28 @@ import {
 export default function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [current, getCurrent] = useState([]);
+
+  function currentUser() {
+    fetch("https://rid-of-it.herokuapp.com/api/registration/")
+      .then((response) => response.json())
+      .then((user) => {
+        console.log(user, "24");
+        if (user.user == "none") {
+          console.log("no user");
+        } else {
+          console.log(user, "27");
+          getCurrent(user);
+          console.log(current, "30");
+        }
+      });
+  }
 
   function getPosts() {
     fetch("https://rid-of-it.herokuapp.com/api/posts/")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log(data, "39");
         setData(data);
         setLoading(false);
       })
@@ -29,13 +45,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     getPosts();
+    currentUser();
   }, []);
 
   function renderPosts({ item }) {
     console.log(item.name);
     return (
       <View>
-        <Image source={{ uri: `${item.image}` }} />
+        <Image source={{ uri: item.image }} style={{ width: 50, height: 50 }} />
         <Text>{item.name}</Text>
         <Text>{item.description}</Text>
         <Text>${item.price}</Text>

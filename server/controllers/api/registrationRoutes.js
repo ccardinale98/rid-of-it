@@ -5,7 +5,7 @@ router.get("/", async (req, res) => {
   console.log("GET /api/registration/");
 
   if (req.session.logged_in == true) {
-    res.json({ user: req.session.user });
+    res.json(req.session.user.id);
   } else {
     res.json({ user: "none" });
   }
