@@ -4,6 +4,18 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import Login from "./Login";
 
+function logout() {
+  fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}
+
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -42,6 +54,7 @@ export default function Home({ navigation }) {
     return (
       <SafeAreaView style={styles.container}>
         <Text>A user is logged in.</Text>
+        <Button title="logout" onPress={() => logout()} />
         <StatusBar style="auto" />
       </SafeAreaView>
     );

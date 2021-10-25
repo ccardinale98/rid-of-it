@@ -9,8 +9,10 @@ import {
   TextInput,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import Home from "./Home";
 
-export default function Login() {
+export default function Login({ navigation }) {
   const { control, handleSubmit, errors, reset } = useForm({
     defaultValues: {
       email: "",
@@ -20,6 +22,23 @@ export default function Login() {
 
   function submit(data) {
     console.log(data);
+
+    fetch("https://rid-of-it.herokuapp.com/api/registration/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+
+    navigation.navigate("Home");
   }
 
   return (
