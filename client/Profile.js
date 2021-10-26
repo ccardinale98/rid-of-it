@@ -4,6 +4,6 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import Login from "./Login";
 
-export default function Home({ navigation }) {
-    
+export default function Profile({ navigation }) {
+
 }
