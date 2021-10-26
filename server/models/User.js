@@ -37,7 +37,9 @@ User.init(
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue:
+        "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107270/rid-of-it/Profile_avatar_placeholder_large_h2l2yr.png",
     },
   },
   {

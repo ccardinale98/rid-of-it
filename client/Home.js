@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
-import Profile from "./Profile"
+import Profile from "./Profile";
+import Signup from "./Signup";
 
 function logout() {
   fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
@@ -24,7 +25,7 @@ export default function Home({ navigation }) {
   // console.log(data);
 
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
 
     if (isMounted) {
       fetch("https://rid-of-it.herokuapp.com/api/registration/")
@@ -33,13 +34,15 @@ export default function Home({ navigation }) {
           console.log(data, "28");
           setData(data);
           if (data.user !== "none") {
-            navigation.navigate("Dashboard")
+            navigation.navigate("Dashboard");
           }
         })
         .catch((err) => console.log(err))
         .finally(() => setLoading(false));
     }
-    return () => {isMounted = false}
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   console.log(data.user, "35");
@@ -57,7 +60,12 @@ export default function Home({ navigation }) {
           </Text>
         </View>
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Signup</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={() => navigation.navigate("Signup")}
+          >
+            Signup
+          </Text>
         </View>
       </View>
       <StatusBar style="auto" />
