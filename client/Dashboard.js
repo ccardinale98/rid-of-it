@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Home from "./Home";
+import Profile from "./Profile"
 
 export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
@@ -91,7 +92,7 @@ export default function Dashboard({ navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.nav}>
         <View style={styles.profile}>
-          <Icon name="user" type="font-awesome" size="60" />
+          <Icon name="user" type="font-awesome" size="60" onPress={() => navigation.navigate("Profile")} />
         </View>
         <View style={styles.post}>
           <Icon name="plus-circle" type="font-awesome" size="60" />
