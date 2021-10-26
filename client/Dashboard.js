@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Home from "./Home";
+import Login from "./Login";
 import Profile from "./Profile"
 
 export default function Dashboard({ navigation }) {
@@ -40,7 +41,7 @@ export default function Dashboard({ navigation }) {
         console.log(user, "24");
         if (user.user == "none") {
           console.log("no user");
-          navigation.navigate("Home");
+          navigation.navigate("Login");
         } else {
           console.log(user.user, "27");
           getCurrent(user.user);
@@ -62,8 +63,14 @@ export default function Dashboard({ navigation }) {
   }
 
   useEffect(() => {
-    getPosts();
-    currentUser();
+    let isMounted = true
+
+    if (isMounted) {
+      getPosts();
+      currentUser();
+    }
+
+    return () => {isMounted = false}
   }, []);
 
   function renderPosts({ item }) {
@@ -152,9 +159,11 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 5,
     flexDirection: "row",
+    marginBottom: 10
   },
   image: {
     flex: 2,
+    borderRadius: 100,
   },
   details: {
     flex: 4,

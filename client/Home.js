@@ -3,6 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import Login from "./Login";
+import Dashboard from "./Dashboard";
+import Profile from "./Profile"
 
 function logout() {
   fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
@@ -22,42 +24,45 @@ export default function Home({ navigation }) {
   // console.log(data);
 
   useEffect(() => {
-    fetch("https://rid-of-it.herokuapp.com/api/registration/")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data, "28");
-        setData(data);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
+    let isMounted = true
+
+    if (isMounted) {
+      fetch("https://rid-of-it.herokuapp.com/api/registration/")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data, "28");
+          setData(data);
+          if (data.user !== "none") {
+            navigation.navigate("Dashboard")
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
+    }
+    return () => {isMounted = false}
   }, []);
 
   console.log(data.user, "35");
-  if (data.user == "none") {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Rid of It</Text>
-        <View style={styles.buttons}>
-          <View style={styles.button}>
-            <Text
-              style={styles.buttonText}
-              onPress={() => navigation.navigate("Login")}
-            >
-              Login
-            </Text>
-          </View>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
-          </View>
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Rid of It</Text>
+      <View style={styles.buttons}>
+        <View style={styles.button}>
+          <Text
+            style={styles.buttonText}
+            onPress={() => navigation.navigate("Login")}
+          >
+            Login
+          </Text>
         </View>
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    );
-  } else {
-    // console.log(data);
-    console.log("USER SIGNED IN --------------------------------");
-    return <View>{navigation.navigate("Dashboard")}</View>;
-  }
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Signup</Text>
+        </View>
+      </View>
+      <StatusBar style="auto" />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
