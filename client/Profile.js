@@ -25,8 +25,8 @@ export default function Profile({ navigation }) {
   const [modalVisible, setModalVisible] = useState();
   const { control, handleSubmit, errors, reset } = useForm({
     defaultValues: {
-      currentPassword: "",
-      newPassword: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -108,22 +108,31 @@ export default function Profile({ navigation }) {
   }
 
   function submit(data) {
-    console.log(data);
+    console.log(data, 111);
 
-    fetch("https://rid-of-it.herokuapp.com/api/registration/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((user) => loginUser(user))
-      .catch((err) => console.log(err));
+    if (data.password == data.confirmPassword) {
+      fetch(`https://rid-of-it.herokuapp.com/api/users/update/${current}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          password: data.password,
+          image: user.image,
+          user_name: user.user_name,
+        }),
+      })
+        .then((response) => response.json())
+        .then((user) => {
+          console.log(user, 128);
+          setModalVisible(false);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("PASSWORDS DONT MATCH");
+    }
   }
 
   return (
@@ -173,22 +182,22 @@ export default function Profile({ navigation }) {
           <View>
             <Controller
               control={control}
-              name="currentPassword"
+              name="password"
               render={({ field: { onChange }, value }) => (
                 <TextInput
-                  style={styles.currentPassword}
-                  placeholder="Current Password"
+                  style={styles.password}
+                  placeholder="New Password"
                   onChangeText={(value) => onChange(value)}
                 />
               )}
             />
             <Controller
               control={control}
-              name="newPassword"
+              name="confirmPassword"
               render={({ field: { onChange }, value }) => (
                 <TextInput
-                  style={styles.newPassword}
-                  placeholder="New Password"
+                  style={styles.confirmPassword}
+                  placeholder="Confirm Password"
                   onChangeText={(value) => onChange(value)}
                 />
               )}
