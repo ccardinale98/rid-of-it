@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 10,
     paddingLeft: 20,
+    paddingRight: 20,
   },
   backDiv: {
     position: "absolute",
