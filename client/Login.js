@@ -99,7 +99,7 @@ export default function Login({ navigation }) {
             <Icon
               name="times"
               type="font-awesome"
-              size="30"
+              size={30}
               onPress={() => setModalVisible(false)}
             />
           </View>
@@ -107,7 +107,7 @@ export default function Login({ navigation }) {
           <Icon
             name="frown-o"
             type="font-awesome"
-            size="90"
+            size={90}
             color="#FF3B3F"
             marginTop={20}
           />

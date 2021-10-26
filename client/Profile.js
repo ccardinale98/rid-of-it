@@ -174,7 +174,7 @@ export default function Profile({ navigation }) {
             <Icon
               name="times"
               type="font-awesome"
-              size="30"
+              size={30}
               onPress={() => setModalVisible(false)}
             />
           </View>

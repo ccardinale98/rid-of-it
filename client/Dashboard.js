@@ -14,7 +14,7 @@ import {
 import { Icon } from "react-native-elements";
 import Home from "./Home";
 import Login from "./Login";
-import Profile from "./Profile"
+import Profile from "./Profile";
 
 export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
@@ -63,14 +63,16 @@ export default function Dashboard({ navigation }) {
   }
 
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
 
     if (isMounted) {
       getPosts();
       currentUser();
     }
 
-    return () => {isMounted = false}
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   function renderPosts({ item }) {
@@ -99,16 +101,21 @@ export default function Dashboard({ navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.nav}>
         <View style={styles.profile}>
-          <Icon name="user" type="font-awesome" size="60" onPress={() => navigation.navigate("Profile")} />
+          <Icon
+            name="user"
+            type="font-awesome"
+            size={60}
+            onPress={() => navigation.navigate("Profile")}
+          />
         </View>
         <View style={styles.post}>
-          <Icon name="plus-circle" type="font-awesome" size="60" />
+          <Icon name="plus-circle" type="font-awesome" size={60} />
         </View>
         <View style={styles.logout}>
           <Icon
             name="sign-out"
             type="font-awesome"
-            size="60"
+            size={60}
             onPress={() => logout()}
           />
         </View>
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 5,
     flexDirection: "row",
-    marginBottom: 10
+    marginBottom: 10,
   },
   image: {
     flex: 2,

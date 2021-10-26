@@ -7,22 +7,31 @@ import {
   SafeAreaView,
   Button,
   TextInput,
+  Modal,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { Icon } from "react-native-elements";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 
-export default function Login({ navigation }) {
+export default function Signup({ navigation }) {
+  const [modal1Visible, setModal1Visible] = useState();
+  const [modal2Visible, setModal2Visible] = useState();
   const { control, handleSubmit, errors, reset } = useForm({
     defaultValues: {
       email: "",
-      usernameL: "",
+      username: "",
       password: "",
       confirmPassword: "",
     },
   });
+
+  useEffect(() => {
+    setModal1Visible(false);
+    setModal2Visible(false);
+  }, []);
 
   function loginUser(user) {
     console.log(user);
@@ -31,25 +40,58 @@ export default function Login({ navigation }) {
 
   function submit(data) {
     console.log(data);
-    if (data.password == data.confirmPassword) {
-      fetch("https://rid-of-it.herokuapp.com/api/registration/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          user_name: data.username,
-          password: data.password,
-        }),
+
+    fetch("https://rid-of-it.herokuapp.com/api/users/")
+      .then((response) => response.json())
+      .then((users) => {
+        console.log(users, "38");
+
+        var userEmails = [];
+        var userNames = [];
+
+        for (var i = 0; i < users.length; i++) {
+          userEmails.push(users[i].email);
+        }
+
+        for (var i = 0; i < users.length; i++) {
+          userNames.push(users[i].user_name);
+        }
+
+        if (
+          userEmails.includes(data.email) ||
+          userNames.includes(data.username)
+        ) {
+          console.log("user already exists");
+          setModal1Visible(true);
+        } else {
+          if (
+            data.password == data.confirmPassword &&
+            data.email !== "" &&
+            data.password !== "" &&
+            data.username !== ""
+          ) {
+            fetch("https://rid-of-it.herokuapp.com/api/registration/signup", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: data.email,
+                user_name: data.username,
+                password: data.password,
+              }),
+            })
+              .then((response) => response.json())
+              .then((user) => loginUser(user))
+              .catch((err) => console.log(err));
+          } else {
+            console.log("passwords dont match");
+            setModal2Visible(true);
+          }
+        }
       })
-        .then((response) => response.json())
-        .then((user) => loginUser(user))
-        .catch((err) => console.log(err));
-    } else {
-      console.log("passwords dont match");
-    }
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -103,6 +145,60 @@ export default function Login({ navigation }) {
         )}
       />
       <Button title="Signup" onPress={handleSubmit((data) => submit(data))} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modal1Visible}
+        onRequestClose={() => setModal1Visible(!modal1Visible)}
+        style={styles.modal}
+      >
+        <SafeAreaView style={styles.modalDiv}>
+          <View style={styles.icon}>
+            <Icon
+              name="times"
+              type="font-awesome"
+              size={30}
+              onPress={() => setModal1Visible(false)}
+            />
+          </View>
+          <Text style={styles.modalTitle}>User already exists!</Text>
+          <Icon
+            name="frown-o"
+            type="font-awesome"
+            size={90}
+            color="#FF3B3F"
+            marginTop={20}
+          />
+        </SafeAreaView>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modal2Visible}
+        onRequestClose={() => setModal2Visible(!modal2Visible)}
+        style={styles.modal}
+      >
+        <SafeAreaView style={styles.modalDiv}>
+          <View style={styles.icon}>
+            <Icon
+              name="times"
+              type="font-awesome"
+              size={30}
+              onPress={() => setModal2Visible(false)}
+            />
+          </View>
+          <Text style={styles.modalTitle}>
+            Either passwords didn't match or you left a field blank!
+          </Text>
+          <Icon
+            name="frown-o"
+            type="font-awesome"
+            size={90}
+            color="#FF3B3F"
+            marginTop={20}
+          />
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -135,5 +231,36 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     left: 10,
+  },
+  modal: {
+    height: "100%",
+    width: "100%",
+  },
+  modalDiv: {
+    backgroundColor: "#A9A9A9",
+    height: "40%",
+    width: "70%",
+    position: "absolute",
+    top: "30%",
+    left: "15%",
+    borderRadius: 25,
+    alignItems: "center",
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  modalTitle: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: 20,
+    color: "#FFF",
+    paddingTop: 40,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  icon: {
+    width: "100%",
+    alignItems: "flex-end",
+    paddingTop: 10,
+    paddingRight: 10,
   },
 });
