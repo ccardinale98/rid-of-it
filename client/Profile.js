@@ -178,8 +178,8 @@ export default function Profile({ navigation }) {
               onPress={() => setModalVisible(false)}
             />
           </View>
-          <Text>Change Password</Text>
-          <View>
+          <Text style={styles.modalTitle}>Change Password</Text>
+          <View style={styles.formDiv}>
             <Controller
               control={control}
               name="password"
@@ -187,6 +187,7 @@ export default function Profile({ navigation }) {
                 <TextInput
                   style={styles.password}
                   placeholder="New Password"
+                  placeholderTextColor="black"
                   onChangeText={(value) => onChange(value)}
                 />
               )}
@@ -196,8 +197,9 @@ export default function Profile({ navigation }) {
               name="confirmPassword"
               render={({ field: { onChange }, value }) => (
                 <TextInput
-                  style={styles.confirmPassword}
+                  style={styles.password}
                   placeholder="Confirm Password"
+                  placeholderTextColor="black"
                   onChangeText={(value) => onChange(value)}
                 />
               )}
@@ -291,16 +293,38 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalDiv: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#A9A9A9",
     height: "40%",
     width: "70%",
     position: "absolute",
     top: "20%",
     left: "15%",
+    borderRadius: 25,
   },
   icon: {
     width: "100%",
     alignItems: "flex-end",
-    paddingRight: 5,
+    paddingTop: 10,
+    paddingRight: 10,
+  },
+  formDiv: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 50,
+  },
+  password: {
+    backgroundColor: "#EFEFEF",
+    width: "80%",
+    height: 30,
+    marginBottom: 10,
+    borderRadius: 25,
+    padding: 2,
+    paddingLeft: 10,
+  },
+  modalTitle: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: 20,
   },
 });
