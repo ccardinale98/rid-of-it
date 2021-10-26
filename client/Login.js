@@ -12,7 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import Home from "./Home";
 import Dashboard from "./Dashboard";
-import Profile from "./Profile"
+import Profile from "./Profile";
 
 export default function Login({ navigation }) {
   const { control, handleSubmit, errors, reset } = useForm({

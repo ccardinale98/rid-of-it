@@ -19,4 +19,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/update/:id", async (req, res) => {
+  console.log("PUT /api/users/update/:id");
+
+  try {
+    const user = await User.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

@@ -9,7 +9,11 @@ import {
   Button,
   Image,
   FlatList,
+  Modal,
+  TextInput,
 } from "react-native";
+import { Icon } from "react-native-elements";
+import { useForm, Controller } from "react-hook-form";
 import Home from "./Home";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
@@ -18,6 +22,13 @@ export default function Profile({ navigation }) {
   const [user, getUser] = useState({});
   const [data, setData] = useState([]);
   const [current, getCurrent] = useState();
+  const [modalVisible, setModalVisible] = useState();
+  const { control, handleSubmit, errors, reset } = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+  });
 
   const isFocused = useIsFocused();
 
@@ -39,6 +50,7 @@ export default function Profile({ navigation }) {
   }
 
   useEffect(() => {
+    setModalVisible(false);
     currentUser();
     getPosts();
   }, []);
@@ -90,6 +102,30 @@ export default function Profile({ navigation }) {
     }
   }
 
+  function handleEdit() {
+    console.log("modal");
+    setModalVisible(true);
+  }
+
+  function submit(data) {
+    console.log(data);
+
+    fetch("https://rid-of-it.herokuapp.com/api/registration/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((user) => loginUser(user))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonDiv}>
@@ -102,6 +138,11 @@ export default function Profile({ navigation }) {
       <View style={styles.main}>
         <Image source={{ uri: user.image }} style={styles.image} />
         <View style={styles.details}>
+          <Button
+            style={styles.edit}
+            title="Change Password"
+            onPress={() => handleEdit()}
+          />
           <Text style={styles.text}>Username: {user.user_name}</Text>
           <Text style={styles.text}>Email: {user.email}</Text>
         </View>
@@ -112,6 +153,53 @@ export default function Profile({ navigation }) {
           style={styles.list}
         />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}
+        style={styles.modal}
+      >
+        <SafeAreaView style={styles.modalDiv}>
+          <View style={styles.icon}>
+            <Icon
+              name="times"
+              type="font-awesome"
+              size="30"
+              onPress={() => setModalVisible(false)}
+            />
+          </View>
+          <Text>Change Password</Text>
+          <View>
+            <Controller
+              control={control}
+              name="currentPassword"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.currentPassword}
+                  placeholder="Current Password"
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="newPassword"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.newPassword}
+                  placeholder="New Password"
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <Button
+              title="Change"
+              onPress={handleSubmit((data) => submit(data))}
+            />
+          </View>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -136,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   details: {
-    paddingTop: 100,
+    paddingTop: 70,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
@@ -185,5 +273,25 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     paddingTop: 20,
     paddingLeft: 15,
+  },
+  edit: {
+    marginBottom: 10,
+  },
+  modal: {
+    height: "100%",
+    width: "100%",
+  },
+  modalDiv: {
+    backgroundColor: "#FFF",
+    height: "40%",
+    width: "70%",
+    position: "absolute",
+    top: "20%",
+    left: "15%",
+  },
+  icon: {
+    width: "100%",
+    alignItems: "flex-end",
+    paddingRight: 5,
   },
 });
