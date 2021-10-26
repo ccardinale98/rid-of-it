@@ -52,7 +52,6 @@ router.post("/signup", async (req, res) => {
       user_name: req.body.user_name,
       email: req.body.email,
       password: req.body.password,
-      image: req.body.image,
     });
 
     req.session.save(() => {
