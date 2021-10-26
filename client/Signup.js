@@ -54,13 +54,16 @@ export default function Login({ navigation }) {
 
   return (
     <SafeAreaView style={styles.main}>
+      <View style={styles.backDiv}>
+        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+      </View>
       <Text style={styles.title}>Signup</Text>
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange }, value }) => (
           <TextInput
-            style={styles.email}
+            style={styles.text}
             placeholder="Email"
             onChangeText={(value) => onChange(value)}
           />
@@ -71,7 +74,7 @@ export default function Login({ navigation }) {
         name="username"
         render={({ field: { onChange }, value }) => (
           <TextInput
-            style={styles.username}
+            style={styles.text}
             placeholder="Username"
             onChangeText={(value) => onChange(value)}
           />
@@ -82,7 +85,7 @@ export default function Login({ navigation }) {
         name="password"
         render={({ field: { onChange }, value }) => (
           <TextInput
-            style={styles.password}
+            style={styles.text}
             placeholder="Password"
             onChangeText={(value) => onChange(value)}
           />
@@ -93,7 +96,7 @@ export default function Login({ navigation }) {
         name="confirmPassword"
         render={({ field: { onChange }, value }) => (
           <TextInput
-            style={styles.confirmPassword}
+            style={styles.text}
             placeholder="Confirm Password"
             onChangeText={(value) => onChange(value)}
           />
@@ -110,14 +113,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#CAEBF2",
     alignItems: "center",
     justifyContent: "center",
+    height: "100%",
+    width: "100%",
   },
   title: {
     fontSize: 50,
+    marginBottom: 30,
+    color: "#FF3B3F",
   },
-  email: {
-    fontSize: 30,
+  text: {
+    fontSize: 20,
+    backgroundColor: "#FFF",
+    width: 250,
+    height: 40,
+    borderRadius: 25,
+    marginBottom: 10,
+    paddingLeft: 20,
   },
-  password: {
-    fontSize: 30,
+  backDiv: {
+    position: "absolute",
+    top: 50,
+    left: 10,
   },
 });

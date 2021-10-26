@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 60,
-    color: "#A9A9A9",
+    color: "#FF3B3F",
     paddingTop: 50,
   },
   buttons: {
