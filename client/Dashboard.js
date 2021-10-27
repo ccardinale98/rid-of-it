@@ -15,6 +15,7 @@ import { Icon } from "react-native-elements";
 import Home from "./Home";
 import Login from "./Login";
 import Profile from "./Profile";
+import Post from "./Post";
 
 export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
@@ -109,7 +110,12 @@ export default function Dashboard({ navigation }) {
           />
         </View>
         <View style={styles.post}>
-          <Icon name="plus-circle" type="font-awesome" size={60} />
+          <Icon
+            name="plus-circle"
+            type="font-awesome"
+            size={60}
+            onPress={() => navigation.navigate("Post")}
+          />
         </View>
         <View style={styles.logout}>
           <Icon

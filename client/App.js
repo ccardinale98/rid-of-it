@@ -8,6 +8,7 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Signup from "./Signup";
+import Post from "./Post";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,11 @@ export default function App() {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Post"
+          component={Post}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
