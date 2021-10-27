@@ -19,6 +19,7 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 
 export default function Post({ navigation }) {
+  let camera;
   const { control, handleSubmit, errors, reset } = useForm({
     defaultValues: {
       name: "",
@@ -47,7 +48,8 @@ export default function Post({ navigation }) {
   };
 
   const __takePicture = async () => {
-    const photo = await Camera.takePictureAsync();
+    console.log("take picture");
+    const photo = await camera.takePictureAsync();
     console.log(photo);
     setCapturedImage(photo);
   };
@@ -60,7 +62,7 @@ export default function Post({ navigation }) {
             style={styles.camera}
             type={type}
             ref={(r) => {
-              Camera = r;
+              camera = r;
             }}
           >
             <View style={styles.buttonContainer}>
@@ -77,7 +79,10 @@ export default function Post({ navigation }) {
                 <Text style={styles.text}> Flip </Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.takePicture} onPress={__takePicture}></View>
+            <TouchableOpacity
+              style={styles.takePicture}
+              onPress={() => __takePicture()}
+            ></TouchableOpacity>
           </Camera>
         ) : (
           <TouchableOpacity
