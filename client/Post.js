@@ -31,11 +31,51 @@ export default function Post({ navigation }) {
   const [startCamera, setStartCamera] = React.useState(false);
   const [uploadedImg, setUploadedImg] = useState("");
   const [capturedImage, setCapturedImage] = useState(null);
+  const [current, getCurrent] = useState();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    currentUser();
+  }, []);
+
+  function currentUser() {
+    fetch("https://rid-of-it.herokuapp.com/api/registration/")
+      .then((response) => response.json())
+      .then((user) => {
+        console.log(user, "24");
+        if (user.user == "none") {
+          console.log("no user");
+          navigation.navigate("Login");
+        } else {
+          console.log(user.user, "27");
+          getCurrent(user.user);
+          console.log(current, "30");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   function submit(data) {
     console.log(data);
+    console.log(uploadedImg, 55);
+    console.log(current, 56);
+    if (uploadedImg !== "" && current) {
+      fetch("https://rid-of-it.herokuapp.com/api/posts/create", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          price: data.price,
+          dexcription: data.description,
+          image: uploadedImg,
+          user_id: current,
+        }),
+      });
+    } else {
+      console.log("error", 71);
+    }
   }
 
   const __startCamera = async () => {
