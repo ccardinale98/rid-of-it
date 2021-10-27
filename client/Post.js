@@ -73,6 +73,7 @@ export default function Post({ navigation }) {
           user_id: current,
         }),
       });
+      navigation.navigate("Dashboard");
     } else {
       console.log("error", 71);
     }
@@ -117,6 +118,7 @@ export default function Post({ navigation }) {
             console.log(data);
             setUploadedImg(data.secure_url);
             alert("Upload Successful");
+            setStartCamera(false);
           }
         })
         .catch((err) => {
@@ -127,100 +129,117 @@ export default function Post({ navigation }) {
   };
 
   return (
-    <View style={styles.main}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.main}>
+      <SafeAreaView style={styles.container}>
         {startCamera ? (
-          <Camera
-            style={styles.camera}
-            type={type}
-            ref={(r) => {
-              camera = r;
-            }}
-          >
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  setType(
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                  );
-                }}
-              >
-                <Text style={styles.text}> Flip </Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              style={styles.takePicture}
-              onPress={() => __takePicture()}
-            ></TouchableOpacity>
-          </Camera>
-        ) : (
-          <TouchableOpacity
-            onPress={__startCamera}
-            style={{
-              width: 130,
-              borderRadius: 4,
-              backgroundColor: "#14274e",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              height: 40,
-            }}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                fontWeight: "bold",
-                textAlign: "center",
+          <SafeAreaView style={styles.container}>
+            <Camera
+              style={styles.camera}
+              type={type}
+              ref={(r) => {
+                camera = r;
               }}
             >
-              Take picture
-            </Text>
-          </TouchableOpacity>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    setType(
+                      type === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back
+                    );
+                  }}
+                >
+                  <Text style={styles.textFlip}> Flip </Text>
+                </TouchableOpacity>
+              </View>
+            </Camera>
+            <Button
+              onPress={() => {
+                __takePicture();
+                console.log("pressed");
+              }}
+              title="Capture"
+            />
+          </SafeAreaView>
+        ) : (
+          <SafeAreaView style={styles.noCamera}>
+            <View style={styles.buttonDiv}>
+              <Button
+                title="Dashboard"
+                onPress={() => navigation.navigate("Dashboard")}
+              />
+            </View>
+            <Text style={styles.title}>Create a Listing</Text>
+            <TouchableOpacity
+              onPress={__startCamera}
+              style={{
+                width: 130,
+                borderRadius: 4,
+                backgroundColor: "#14274e",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                height: 40,
+                marginTop: 15,
+                marginBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Open Camera
+              </Text>
+            </TouchableOpacity>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.text}
+                  placeholder="Item Name"
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.textDesc}
+                  multiline={true}
+                  placeholder="Item Description"
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="price"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.text}
+                  placeholder="Price"
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <TouchableOpacity
+              style={styles.postButton}
+              onPress={handleSubmit((data) => submit(data))}
+            >
+              <Text style={styles.post}>Post</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
-      </View>
-      <Button
-        title="Dashboard"
-        onPress={() => navigation.navigate("Dashboard")}
-      />
-      <Text>Create a Listing</Text>
-      <Controller
-        control={control}
-        name="name"
-        render={({ field: { onChange }, value }) => (
-          <TextInput
-            style={styles.text}
-            placeholder="Item Name"
-            onChangeText={(value) => onChange(value)}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="description"
-        render={({ field: { onChange }, value }) => (
-          <TextInput
-            style={styles.text}
-            placeholder="Item Description"
-            onChangeText={(value) => onChange(value)}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="price"
-        render={({ field: { onChange }, value }) => (
-          <TextInput
-            style={styles.text}
-            placeholder="Price"
-            onChangeText={(value) => onChange(value)}
-          />
-        )}
-      />
-      <Button title="Post" onPress={handleSubmit((data) => submit(data))} />
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 }
 
@@ -228,21 +247,83 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: "#CAEBF2",
     alignItems: "center",
-    justifyContent: "center",
     height: "100%",
     width: "100%",
   },
+  noCamera: {
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
+    paddingTop: 50,
+  },
+  container: {
+    height: "110%",
+    width: "100%",
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   camera: {
-    height: 500,
-    width: 250,
+    height: "75%",
+    width: "90%",
+    borderColor: "#A9A9A9",
+    borderWidth: 5,
   },
   takePicture: {
     height: 50,
     width: 50,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FF3B3F",
     borderRadius: 100,
-    position: "absolute",
-    top: 425,
-    left: 100,
+  },
+  buttonDiv: {
+    width: "100%",
+    alignItems: "flex-start",
+    paddingLeft: 15,
+    marginTop: 40,
+  },
+  textFlip: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: "#FFF",
+    fontSize: 20,
+  },
+  title: {
+    fontSize: 40,
+    color: "#FF3B3F",
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 20,
+    backgroundColor: "#FFF",
+    width: 250,
+    height: 40,
+    borderRadius: 25,
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  textDesc: {
+    fontSize: 20,
+    backgroundColor: "#FFF",
+    width: 250,
+    height: 150,
+    borderRadius: 25,
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  postButton: {
+    height: 60,
+    width: 150,
+    marginTop: 40,
+    borderRadius: 25,
+    backgroundColor: "#FF3B3F",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  post: {
+    fontSize: 40,
+    color: "#FFF",
   },
 });
