@@ -29,6 +29,7 @@ export default function Post({ navigation }) {
   });
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [startCamera, setStartCamera] = React.useState(false);
+  const [uploadedImg, setUploadedImg] = useState("");
   const [capturedImage, setCapturedImage] = useState(null);
 
   useEffect(() => {}, []);
@@ -49,9 +50,40 @@ export default function Post({ navigation }) {
 
   const __takePicture = async () => {
     console.log("take picture");
-    const photo = await camera.takePictureAsync();
-    console.log(photo);
-    setCapturedImage(photo);
+    const options = { quality: 0.7, base64: true };
+    const data = await camera.takePictureAsync(options);
+    console.log(data.uri);
+    setCapturedImage(data.uri);
+    const source = data.base64;
+
+    if (source) {
+      let base64Img = `data:image/jpg;base64,${source}`;
+      let apiUrl = "https://api.cloudinary.com/v1_1/dxw7l6liy/image/upload";
+      let data = {
+        file: base64Img,
+        upload_preset: "myUploadPreset",
+      };
+
+      fetch(apiUrl, {
+        body: JSON.stringify(data),
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "POST",
+      })
+        .then(async (response) => {
+          let data = await response.json();
+          if (data.secure_url) {
+            console.log(data);
+            setUploadedImg(data.secure_url);
+            alert("Upload Successful");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Cannot Upload");
+        });
+    }
   };
 
   return (
