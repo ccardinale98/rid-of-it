@@ -12,6 +12,7 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { Camera } from "expo-camera";
@@ -183,8 +184,8 @@ export default function Profile({ navigation }) {
               style={styles.imagePost}
             />
             <View style={styles.detailsPost}>
-              <Text>{item.name}</Text>
-              <Text>${item.price}</Text>
+              <Text style={{ color: "#FFF" }}>{item.name}</Text>
+              <Text style={{ color: "#FFF" }}>${item.price}</Text>
               <Button title="Delete" onPress={() => deletePost(item.id)} />
             </View>
           </View>
@@ -227,15 +228,24 @@ export default function Profile({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8&w=1000&q=80",
+      }}
+      style={styles.container}
+    >
       {!startCamera ? (
         <View style={styles.container}>
-          <View style={styles.buttonDiv}>
-            <Button
-              title="Dashboard"
-              onPress={() => navigation.navigate("Dashboard")}
-              style={styles.button}
-            />
+          <View style={styles.navDet}>
+            <View style={styles.back}>
+              <Icon
+                name="angle-left"
+                type="font-awesome"
+                size={60}
+                color="#4988ac"
+                onPress={() => navigation.navigate("Dashboard")}
+              />
+            </View>
           </View>
           <View style={styles.main}>
             <Image source={{ uri: user.image }} style={styles.image} />
@@ -343,16 +353,24 @@ export default function Profile({ navigation }) {
           />
         </SafeAreaView>
       )}
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   main: {
-    height: "100%",
-    width: "100%",
+    flex: 1,
     alignItems: "center",
-    paddingTop: 30,
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+  navDet: {
+    width: "100%",
+    height: 90,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "#1f3e58",
   },
   camera: {
     height: "75%",
@@ -368,7 +386,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#CAEBF2",
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
@@ -381,16 +398,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   image: {
+    marginTop: 20,
     width: 200,
     height: 200,
     borderRadius: 100,
+    borderColor: "#faad59",
+    borderWidth: 5,
   },
   details: {
-    paddingTop: 70,
+    paddingTop: 20,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    borderBottomColor: "#FF3B3F",
+    borderBottomColor: "#faad59",
     borderBottomWidth: 5,
   },
   text: {
@@ -398,7 +418,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignItems: "center",
     justifyContent: "center",
-    color: "#A9A9A9",
+    color: "#FFF",
   },
   list: {
     width: "100%",
@@ -411,24 +431,24 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "80%",
-    backgroundColor: "#EFEFEF",
     padding: 20,
-    borderColor: "#A9A9A9",
-    borderStyle: "solid",
-    borderWidth: 5,
     flexDirection: "row",
     marginBottom: 10,
+    backgroundColor: "#1f3e58",
+    borderRadius: 25,
+    alignItems: "center",
   },
   imagePost: {
     flex: 2,
-    borderRadius: 100,
-    height: 50,
+    borderRadius: 25,
+    height: 70,
     width: 50,
   },
   detailsPost: {
     flex: 4,
     justifyContent: "center",
     alignItems: "center",
+    color: "#FFF",
   },
   buttonDiv: {
     width: "100%",
@@ -437,7 +457,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   edit: {
-    marginBottom: 10,
+    marginBottom: 20,
   },
   modal: {
     height: "100%",
@@ -477,5 +497,10 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     fontSize: 20,
+  },
+  back: {
+    width: "100%",
+    alignItems: "flex-start",
+    paddingLeft: 15,
   },
 });

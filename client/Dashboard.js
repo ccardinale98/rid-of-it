@@ -12,6 +12,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ImageBackground,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Icon } from "react-native-elements";
@@ -105,7 +106,7 @@ export default function Dashboard({ navigation }) {
             />
             <View style={styles.details}>
               <Button title={item.name} onPress={() => handleDetails(item)} />
-              <Text>${item.price}</Text>
+              <Text style={{ color: "white" }}>${item.price}</Text>
             </View>
           </View>
         </View>
@@ -140,7 +141,12 @@ export default function Dashboard({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8&w=1000&q=80",
+      }}
+      style={styles.container}
+    >
       {!show ? (
         <View style={styles.container}>
           <View style={styles.nav}>
@@ -149,6 +155,7 @@ export default function Dashboard({ navigation }) {
                 name="user"
                 type="font-awesome"
                 size={60}
+                color="#4988ac"
                 onPress={() => navigation.navigate("Profile")}
               />
             </View>
@@ -157,6 +164,7 @@ export default function Dashboard({ navigation }) {
                 name="plus-circle"
                 type="font-awesome"
                 size={60}
+                color="#4988ac"
                 onPress={() => navigation.navigate("Post")}
               />
             </View>
@@ -165,6 +173,7 @@ export default function Dashboard({ navigation }) {
                 name="sign-out"
                 type="font-awesome"
                 size={60}
+                color="#4988ac"
                 onPress={() => logout()}
               />
             </View>
@@ -186,7 +195,7 @@ export default function Dashboard({ navigation }) {
               style={{
                 width: 65,
                 borderRadius: 4,
-                backgroundColor: "#14274e",
+                backgroundColor: "#faad59",
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
@@ -197,7 +206,7 @@ export default function Dashboard({ navigation }) {
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: "#FFF",
                   fontWeight: "bold",
                   textAlign: "center",
                 }}
@@ -214,9 +223,17 @@ export default function Dashboard({ navigation }) {
           />
         </View>
       ) : (
-        <View style={styles.postMain}>
-          <View style={styles.buttonDiv}>
-            <Button title="Dashboard" onPress={() => showPost(false)} />
+        <View style={styles.container}>
+          <View style={styles.navDet}>
+            <View style={styles.back}>
+              <Icon
+                name="angle-left"
+                type="font-awesome"
+                size={60}
+                color="#4988ac"
+                onPress={() => showPost(false)}
+              />
+            </View>
           </View>
           <Image
             source={{ uri: item.image }}
@@ -233,7 +250,7 @@ export default function Dashboard({ navigation }) {
               style={{
                 width: 130,
                 borderRadius: 4,
-                backgroundColor: "#14274e",
+                backgroundColor: "#faad59",
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
@@ -243,7 +260,7 @@ export default function Dashboard({ navigation }) {
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: "#FFF",
                   fontWeight: "bold",
                   textAlign: "center",
                 }}
@@ -254,14 +271,13 @@ export default function Dashboard({ navigation }) {
           </View>
         </View>
       )}
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#CAEBF2",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
@@ -290,22 +306,23 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 50,
-    color: "#FF3B3F",
+    color: "#FFF",
   },
   itemDesc: {
     fontSize: 20,
     marginTop: 20,
-    color: "#A9A9A9",
+    color: "#FFF",
   },
   itemPrice: {
     fontSize: 40,
     marginTop: 20,
-    color: "#A9A9A9",
+    color: "#FFF",
   },
   postMain: {
     alignItems: "center",
     width: "100%",
     height: "100%",
+    paddingTop: 40,
   },
   itemDetails: {
     height: "50%",
@@ -315,14 +332,22 @@ const styles = StyleSheet.create({
   },
   nav: {
     width: "100%",
-    height: 70,
+    height: 110,
+    paddingTop: 40,
     marginBottom: 20,
     borderStyle: "solid",
-    borderBottomWidth: 5,
-    borderBottomColor: "#FF3B3F",
+    backgroundColor: "#1f3e58",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  navDet: {
+    width: "100%",
+    height: 210,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 10,
+    backgroundColor: "#1f3e58",
   },
   list: {
     width: "90%",
@@ -334,13 +359,11 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "80%",
-    backgroundColor: "#EFEFEF",
     padding: 20,
-    borderColor: "#A9A9A9",
-    borderStyle: "solid",
-    borderWidth: 5,
     flexDirection: "row",
     marginBottom: 10,
+    backgroundColor: "#1f3e58",
+    borderRadius: 25,
   },
   image: {
     flex: 2,
@@ -360,6 +383,11 @@ const styles = StyleSheet.create({
     height: "100%",
     marginLeft: 10,
     marginRight: 10,
+  },
+  back: {
+    width: "100%",
+    alignItems: "flex-start",
+    paddingLeft: 15,
   },
   logout: {
     height: "100%",
