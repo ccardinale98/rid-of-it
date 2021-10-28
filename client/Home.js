@@ -7,22 +7,9 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Signup from "./Signup";
 
-function logout() {
-  fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .catch((err) => console.log(err));
-}
-
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  // console.log(data);
 
   useEffect(() => {
     let isMounted = true;
