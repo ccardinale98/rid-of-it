@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Home from "./Home";
@@ -145,15 +146,42 @@ export default function Dashboard({ navigation }) {
         </View>
       ) : (
         <View style={styles.postMain}>
-          <Button title="Dashboard" onPress={() => showPost(false)} />
+          <View style={styles.buttonDiv}>
+            <Button title="Dashboard" onPress={() => showPost(false)} />
+          </View>
           <Image
             source={{ uri: item.image }}
-            style={{ width: "100%", height: "50%" }}
+            style={{
+              width: "100%",
+              height: "50%",
+            }}
           />
           <View style={styles.itemDetails}>
-            <Text>{item.name}</Text>
-            <Text>{item.description}</Text>
-            <Text>{item.price}</Text>
+            <Text style={styles.itemTitle}>{item.name}</Text>
+            <Text style={styles.itemDesc}>{item.description}</Text>
+            <Text style={styles.itemPrice}>${item.price}</Text>
+            <TouchableOpacity
+              style={{
+                width: 130,
+                borderRadius: 4,
+                backgroundColor: "#14274e",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                height: 40,
+                marginTop: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Buy
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -170,10 +198,35 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  buttonDiv: {
+    width: "100%",
+    alignItems: "flex-start",
+    paddingLeft: 5,
+  },
+  itemTitle: {
+    fontSize: 50,
+    color: "#FF3B3F",
+  },
+  itemDesc: {
+    fontSize: 20,
+    marginTop: 20,
+    color: "#A9A9A9",
+  },
+  itemPrice: {
+    fontSize: 40,
+    marginTop: 20,
+    color: "#A9A9A9",
+  },
   postMain: {
     alignItems: "center",
     width: "100%",
     height: "100%",
+  },
+  itemDetails: {
+    height: "50%",
+    width: "100%",
+    alignItems: "center",
+    padding: 20,
   },
   nav: {
     width: "100%",
