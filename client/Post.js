@@ -25,6 +25,7 @@ export default function Post({ navigation }) {
       name: "",
       description: "",
       price: "",
+      tags: "",
     },
   });
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -71,6 +72,7 @@ export default function Post({ navigation }) {
           description: data.description,
           image: uploadedImg,
           user_id: current,
+          tags: data.tags,
         }),
       });
       navigation.navigate("Dashboard");
@@ -230,6 +232,18 @@ export default function Post({ navigation }) {
                 />
               )}
             />
+            <Controller
+              control={control}
+              name="tags"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.tags}
+                  multiline={true}
+                  placeholder='Search Tags (seperated by ",")'
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
             <TouchableOpacity
               style={styles.postButton}
               onPress={handleSubmit((data) => submit(data))}
@@ -290,7 +304,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     color: "#FF3B3F",
-    marginTop: 30,
     marginBottom: 20,
   },
   text: {
@@ -298,6 +311,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     width: 250,
     height: 40,
+    borderRadius: 25,
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  tags: {
+    fontSize: 20,
+    backgroundColor: "#FFF",
+    width: 250,
+    height: 80,
     borderRadius: 25,
     marginBottom: 10,
     paddingLeft: 20,

@@ -121,15 +121,19 @@ export default function Dashboard({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data, "39");
-        var namesDescs = [];
+        var taggedData = [];
         for (var i = 0; i < data.length; i++) {
-          namesDescs.unshift(data[i].name.toLowerCase().split(" "));
-          namesDescs.unshift(data[i].description.toLowerCase().split(" "));
+          var tags = data[i].tags.toLowerCase().split(",");
+          if (tags.includes(search)) {
+            taggedData.unshift(data[i]);
+          }
         }
-        console.log(namesDescs, 129);
-        if (namesDescs.includes(search)) {
+        console.log(taggedData, 129);
+
+        if (search == "" || search == " " || search == "all") {
           setData(data);
-          setLoading(false);
+        } else {
+          setData(taggedData);
         }
       })
       .catch((err) => console.log(err));
@@ -172,7 +176,7 @@ export default function Dashboard({ navigation }) {
               render={({ field: { onChange }, value }) => (
                 <TextInput
                   style={styles.text}
-                  placeholder="..."
+                  placeholder="Search by keyword"
                   onChangeText={(value) => onChange(value)}
                 />
               )}
