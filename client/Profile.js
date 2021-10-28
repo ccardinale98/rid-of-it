@@ -11,18 +11,25 @@ import {
   FlatList,
   Modal,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { Icon } from "react-native-elements";
+import { Camera } from "expo-camera";
 import { useForm, Controller } from "react-hook-form";
 import Home from "./Home";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 
 export default function Profile({ navigation }) {
+  let camera;
   const [user, getUser] = useState({});
   const [data, setData] = useState([]);
   const [current, getCurrent] = useState();
   const [modalVisible, setModalVisible] = useState();
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [startCamera, setStartCamera] = React.useState(false);
+  const [uploadedImg, setUploadedImg] = useState("");
+  const [capturedImage, setCapturedImage] = useState(null);
   const { control, handleSubmit, errors, reset } = useForm({
     defaultValues: {
       password: "",
@@ -54,6 +61,75 @@ export default function Profile({ navigation }) {
     currentUser();
     getPosts();
   }, []);
+
+  const __startCamera = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    if (status === "granted") {
+      // do something
+      setStartCamera(true);
+    } else {
+      Alert.alert("Access denied");
+    }
+  };
+
+  const __takePicture = async () => {
+    console.log("take picture");
+    const options = { quality: 0.7, base64: true };
+    const data = await camera.takePictureAsync(options);
+    console.log(data.uri);
+    setCapturedImage(data.uri);
+    const source = data.base64;
+
+    if (source) {
+      let base64Img = `data:image/jpg;base64,${source}`;
+      let apiUrl = "https://api.cloudinary.com/v1_1/dxw7l6liy/image/upload";
+      let data = {
+        file: base64Img,
+        upload_preset: "myUploadPreset",
+      };
+
+      fetch(apiUrl, {
+        body: JSON.stringify(data),
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "POST",
+      })
+        .then(async (response) => {
+          let data = await response.json();
+          if (data.secure_url) {
+            console.log(data);
+            setUploadedImg(data.secure_url);
+            alert("Upload Successful");
+            console.log(uploadedImg, 104);
+            fetch(
+              `https://rid-of-it.herokuapp.com/api/users/update/${current}`,
+              {
+                method: "PUT",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: user.email,
+                  password: user.password,
+                  image: data.secure_url,
+                  user_name: user.user_name,
+                }),
+              }
+            )
+              .then((response) => response.json())
+              .catch((err) => console.log(err));
+          }
+          setStartCamera(false);
+          currentUser();
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Cannot Upload");
+        });
+    }
+  };
 
   function getPosts() {
     fetch("https://rid-of-it.herokuapp.com/api/posts/")
@@ -152,80 +228,121 @@ export default function Profile({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.buttonDiv}>
-        <Button
-          title="Dashboard"
-          onPress={() => navigation.navigate("Dashboard")}
-          style={styles.button}
-        />
-      </View>
-      <View style={styles.main}>
-        <Image source={{ uri: user.image }} style={styles.image} />
-        <View style={styles.details}>
-          <Button
-            style={styles.edit}
-            title="Change Password"
-            onPress={() => handleEdit()}
-          />
-          <Text style={styles.text}>Username: {user.user_name}</Text>
-          <Text style={styles.text}>Email: {user.email}</Text>
-        </View>
-        <FlatList
-          data={data}
-          renderItem={renderPosts}
-          keyExtractor={(item) => item.id.toString()}
-          style={styles.list}
-        />
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
-        style={styles.modal}
-      >
-        <SafeAreaView style={styles.modalDiv}>
-          <View style={styles.icon}>
-            <Icon
-              name="times"
-              type="font-awesome"
-              size={30}
-              onPress={() => setModalVisible(false)}
-            />
-          </View>
-          <Text style={styles.modalTitle}>Change Password</Text>
-          <View style={styles.formDiv}>
-            <Controller
-              control={control}
-              name="password"
-              render={({ field: { onChange }, value }) => (
-                <TextInput
-                  style={styles.password}
-                  placeholder="New Password"
-                  placeholderTextColor="black"
-                  onChangeText={(value) => onChange(value)}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="confirmPassword"
-              render={({ field: { onChange }, value }) => (
-                <TextInput
-                  style={styles.password}
-                  placeholder="Confirm Password"
-                  placeholderTextColor="black"
-                  onChangeText={(value) => onChange(value)}
-                />
-              )}
-            />
+      {!startCamera ? (
+        <View style={styles.container}>
+          <View style={styles.buttonDiv}>
             <Button
-              title="Change"
-              onPress={handleSubmit((data) => submit(data))}
+              title="Dashboard"
+              onPress={() => navigation.navigate("Dashboard")}
+              style={styles.button}
             />
           </View>
+          <View style={styles.main}>
+            <Image source={{ uri: user.image }} style={styles.image} />
+            <View style={styles.details}>
+              <Button
+                style={styles.edit}
+                title="Change Profile Picture"
+                onPress={() => __startCamera()}
+              />
+              <Button
+                style={styles.edit}
+                title="Change Password"
+                onPress={() => handleEdit()}
+              />
+              <Text style={styles.text}>Username: {user.user_name}</Text>
+              <Text style={styles.text}>Email: {user.email}</Text>
+            </View>
+            <FlatList
+              data={data}
+              renderItem={renderPosts}
+              keyExtractor={(item) => item.id.toString()}
+              style={styles.list}
+            />
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(!modalVisible)}
+            style={styles.modal}
+          >
+            <SafeAreaView style={styles.modalDiv}>
+              <View style={styles.icon}>
+                <Icon
+                  name="times"
+                  type="font-awesome"
+                  size={30}
+                  onPress={() => setModalVisible(false)}
+                />
+              </View>
+              <Text style={styles.modalTitle}>Change Password</Text>
+              <View style={styles.formDiv}>
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange }, value }) => (
+                    <TextInput
+                      style={styles.password}
+                      placeholder="New Password"
+                      placeholderTextColor="black"
+                      onChangeText={(value) => onChange(value)}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="confirmPassword"
+                  render={({ field: { onChange }, value }) => (
+                    <TextInput
+                      style={styles.password}
+                      placeholder="Confirm Password"
+                      placeholderTextColor="black"
+                      onChangeText={(value) => onChange(value)}
+                    />
+                  )}
+                />
+                <Button
+                  title="Change"
+                  onPress={handleSubmit((data) => submit(data))}
+                />
+              </View>
+            </SafeAreaView>
+          </Modal>
+        </View>
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <Camera
+            style={styles.camera}
+            type={type}
+            ref={(r) => {
+              camera = r;
+            }}
+          >
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              >
+                <Text style={styles.textFlip}> Flip </Text>
+              </TouchableOpacity>
+            </View>
+          </Camera>
+          <Button
+            onPress={() => {
+              __takePicture();
+              console.log("pressed");
+            }}
+            title="Capture"
+          />
         </SafeAreaView>
-      </Modal>
+      )}
     </SafeAreaView>
   );
 }
@@ -237,12 +354,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 30,
   },
+  camera: {
+    height: "75%",
+    width: "90%",
+    borderColor: "#A9A9A9",
+    borderWidth: 5,
+  },
+  takePicture: {
+    height: 50,
+    width: 50,
+    backgroundColor: "#FF3B3F",
+    borderRadius: 100,
+  },
   container: {
     flex: 1,
     backgroundColor: "#CAEBF2",
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
+    width: "100%",
+  },
+  textFlip: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: "#FFF",
+    fontSize: 20,
   },
   image: {
     width: 200,
