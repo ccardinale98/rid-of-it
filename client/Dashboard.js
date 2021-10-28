@@ -21,6 +21,8 @@ export default function Dashboard({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [current, getCurrent] = useState();
+  const [show, showPost] = React.useState(false);
+  const [item, currenItem] = useState({});
 
   function logout() {
     fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
@@ -63,6 +65,12 @@ export default function Dashboard({ navigation }) {
       .catch((err) => console.log(err));
   }
 
+  function handleDetails(item) {
+    console.log(item);
+    showPost(true);
+    currenItem(item);
+  }
+
   useEffect(() => {
     let isMounted = true;
 
@@ -88,9 +96,8 @@ export default function Dashboard({ navigation }) {
               style={styles.image}
             />
             <View style={styles.details}>
-              <Text>{item.name}</Text>
+              <Button title={item.name} onPress={() => handleDetails(item)} />
               <Text>${item.price}</Text>
-              <Button title="View" />
             </View>
           </View>
         </View>
@@ -100,39 +107,56 @@ export default function Dashboard({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.nav}>
-        <View style={styles.profile}>
-          <Icon
-            name="user"
-            type="font-awesome"
-            size={60}
-            onPress={() => navigation.navigate("Profile")}
+      {!show ? (
+        <View style={styles.container}>
+          <View style={styles.nav}>
+            <View style={styles.profile}>
+              <Icon
+                name="user"
+                type="font-awesome"
+                size={60}
+                onPress={() => navigation.navigate("Profile")}
+              />
+            </View>
+            <View style={styles.post}>
+              <Icon
+                name="plus-circle"
+                type="font-awesome"
+                size={60}
+                onPress={() => navigation.navigate("Post")}
+              />
+            </View>
+            <View style={styles.logout}>
+              <Icon
+                name="sign-out"
+                type="font-awesome"
+                size={60}
+                onPress={() => logout()}
+              />
+            </View>
+          </View>
+          <View></View>
+          <FlatList
+            data={data}
+            renderItem={renderPosts}
+            keyExtractor={(item) => item.id.toString()}
+            style={styles.list}
           />
         </View>
-        <View style={styles.post}>
-          <Icon
-            name="plus-circle"
-            type="font-awesome"
-            size={60}
-            onPress={() => navigation.navigate("Post")}
+      ) : (
+        <View style={styles.postMain}>
+          <Button title="Dashboard" onPress={() => showPost(false)} />
+          <Image
+            source={{ uri: item.image }}
+            style={{ width: "100%", height: "50%" }}
           />
+          <View style={styles.itemDetails}>
+            <Text>{item.name}</Text>
+            <Text>{item.description}</Text>
+            <Text>{item.price}</Text>
+          </View>
         </View>
-        <View style={styles.logout}>
-          <Icon
-            name="sign-out"
-            type="font-awesome"
-            size={60}
-            onPress={() => logout()}
-          />
-        </View>
-      </View>
-      <View></View>
-      <FlatList
-        data={data}
-        renderItem={renderPosts}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.list}
-      />
+      )}
     </SafeAreaView>
   );
 }
@@ -144,6 +168,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    height: "100%",
+  },
+  postMain: {
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   nav: {
     width: "100%",
