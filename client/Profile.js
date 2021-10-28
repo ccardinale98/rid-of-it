@@ -80,6 +80,20 @@ export default function Profile({ navigation }) {
       .catch((err) => console.log(err));
   }
 
+  function deletePost(item) {
+    console.log(item, 84);
+    fetch(`https://rid-of-it.herokuapp.com/api/posts/delete/${item}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.text())
+      .then((resData) => {
+        console.log(resData);
+        getPosts();
+      })
+      .catch((err) => console.log(err));
+    alert("Listing Deleted");
+  }
+
   function renderPosts({ item }) {
     console.log(item.name, 64);
     console.log(current);
@@ -95,6 +109,7 @@ export default function Profile({ navigation }) {
             <View style={styles.detailsPost}>
               <Text>{item.name}</Text>
               <Text>${item.price}</Text>
+              <Button title="Delete" onPress={() => deletePost(item.id)} />
             </View>
           </View>
         </View>
