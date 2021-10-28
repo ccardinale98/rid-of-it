@@ -11,7 +11,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 import { Icon } from "react-native-elements";
 import Home from "./Home";
 import Login from "./Login";
@@ -24,6 +26,11 @@ export default function Dashboard({ navigation }) {
   const [current, getCurrent] = useState();
   const [show, showPost] = React.useState(false);
   const [item, currenItem] = useState({});
+  const { control, handleSubmit, errors, reset } = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
 
   function logout() {
     fetch("https://rid-of-it.herokuapp.com/api/registration/logout", {
@@ -106,6 +113,28 @@ export default function Dashboard({ navigation }) {
     }
   }
 
+  function submit(data) {
+    console.log(data);
+    var search = data.search.toLowerCase();
+    console.log(search);
+    fetch("https://rid-of-it.herokuapp.com/api/posts/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data, "39");
+        var namesDescs = [];
+        for (var i = 0; i < data.length; i++) {
+          namesDescs.unshift(data[i].name.toLowerCase().split(" "));
+          namesDescs.unshift(data[i].description.toLowerCase().split(" "));
+        }
+        console.log(namesDescs, 129);
+        if (namesDescs.includes(search)) {
+          setData(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {!show ? (
@@ -136,7 +165,43 @@ export default function Dashboard({ navigation }) {
               />
             </View>
           </View>
-          <View></View>
+          <View style={styles.searchDiv}>
+            <Controller
+              control={control}
+              name="search"
+              render={({ field: { onChange }, value }) => (
+                <TextInput
+                  style={styles.text}
+                  placeholder="..."
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+            <TouchableOpacity
+              onPress={handleSubmit((data) => submit(data))}
+              style={{
+                width: 65,
+                borderRadius: 4,
+                backgroundColor: "#14274e",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                height: 40,
+                marginTop: 15,
+                marginBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Search
+              </Text>
+            </TouchableOpacity>
+          </View>
           <FlatList
             data={data}
             renderItem={renderPosts}
@@ -198,6 +263,22 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  searchDiv: {
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: "100%",
+    flexDirection: "row",
+  },
+  text: {
+    fontSize: 20,
+    backgroundColor: "#FFF",
+    width: 250,
+    height: 40,
+    borderRadius: 25,
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   buttonDiv: {
     width: "100%",
     alignItems: "flex-start",
@@ -240,7 +321,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   list: {
-    width: "100%",
+    width: "90%",
   },
   boxDiv: {
     width: "100%",

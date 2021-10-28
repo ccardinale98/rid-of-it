@@ -35,6 +35,10 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    tags: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,

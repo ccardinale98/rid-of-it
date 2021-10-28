@@ -24,6 +24,7 @@ router.post("/create", async (req, res) => {
       price: req.body.price,
       description: req.body.description,
       image: req.body.image,
+      tags: req.body.tags,
     });
 
     res.status(200).json(post);

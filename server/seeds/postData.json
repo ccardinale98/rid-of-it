@@ -4,20 +4,23 @@
     "name": "iPhone 11",
     "price": 400,
     "description": "This is a good phone",
-    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107293/rid-of-it/iphonex_front_homescreen_inline.jpg.large_u9pgwe.jpg"
+    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107293/rid-of-it/iphonex_front_homescreen_inline.jpg.large_u9pgwe.jpg",
+    "tags": "phone,iphone,iphone11,apple,mobile"
   },
   {
     "user_id": 1,
     "name": "Gaming PC",
     "price": 1100,
     "description": "RTX 3070, Ryzen 7 3700x",
-    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107350/rid-of-it/83-360-190-01_r0iphl.jpg"
+    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107350/rid-of-it/83-360-190-01_r0iphl.jpg",
+    "tags": "pc,gaming,gaming pc,computer,3070,ryzen 7 3700x,windows"
   },
   {
     "user_id": 2,
     "name": "Couch",
     "price": 150,
     "description": "Very comfortable couch",
-    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107321/rid-of-it/Sofas_mpyy0v.jpg"
+    "image": "https://res.cloudinary.com/dxw7l6liy/image/upload/v1635107321/rid-of-it/Sofas_mpyy0v.jpg",
+    "tags": "couch,sit,comfortable"
   }
 ]
