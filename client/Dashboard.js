@@ -288,6 +288,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "100%",
     flexDirection: "row",
+    paddingBottom: 10,
+    borderBottomWidth: 5,
+    borderBottomColor: "#faad59",
+    marginBottom: 30,
   },
   text: {
     fontSize: 20,
