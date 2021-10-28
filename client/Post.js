@@ -68,7 +68,7 @@ export default function Post({ navigation }) {
         body: JSON.stringify({
           name: data.name,
           price: data.price,
-          dexcription: data.description,
+          description: data.description,
           image: uploadedImg,
           user_id: current,
         }),

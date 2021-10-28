@@ -22,7 +22,7 @@ router.post("/create", async (req, res) => {
       name: req.body.name,
       user_id: req.session.user_id,
       price: req.body.price,
-      descriprion: req.body.description,
+      description: req.body.description,
       image: req.body.image,
     });
 
