@@ -137,6 +137,7 @@ export default function Login({ navigation }) {
               name="times"
               type="font-awesome"
               size={30}
+              color="#4988ac"
               onPress={() => setModalVisible(false)}
             />
           </View>
@@ -145,7 +146,7 @@ export default function Login({ navigation }) {
             name="frown-o"
             type="font-awesome"
             size={90}
-            color="#FF3B3F"
+            color="#faad59"
             marginTop={20}
           />
         </SafeAreaView>
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalDiv: {
-    backgroundColor: "#A9A9A9",
+    backgroundColor: "#1f3e58",
     height: "40%",
     width: "70%",
     position: "absolute",
