@@ -1,7 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  ImageBackground,
+} from "react-native";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
@@ -35,7 +42,12 @@ export default function Home({ navigation }) {
   console.log(data.user, "35");
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8&w=1000&q=80",
+      }}
+      style={styles.container}
+    >
       <Text style={styles.title}>Rid of It</Text>
       <View style={styles.buttons}>
         <View style={styles.button}>
@@ -56,7 +68,7 @@ export default function Home({ navigation }) {
         </View>
       </View>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -70,8 +82,8 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 60,
-    color: "#FF3B3F",
-    paddingTop: 50,
+    color: "#FFF",
+    paddingTop: 100,
   },
   buttons: {
     flex: 10,
@@ -83,8 +95,7 @@ const styles = StyleSheet.create({
     width: "70%",
     height: "17%",
     borderRadius: 25,
-    backgroundColor: "#FF3B3F",
-    color: "#FF3B3F",
+    backgroundColor: "#faad59",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
