@@ -3,6 +3,8 @@
     "name": "rid-of-it",
     "slug": "rid-of-it",
     "version": "1.0.0",
+    "sdkVersion": "43.0.0",
+    "privacy": "public",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -13,12 +15,15 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to upload images of products."
-      }
+      },
+      "bundleIdentifier": "com.ccardinale98.rid-of-it"
     },
     "android": {
       "adaptiveIcon": {
