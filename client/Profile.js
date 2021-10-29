@@ -282,6 +282,7 @@ export default function Profile({ navigation }) {
                 <Icon
                   name="times"
                   type="font-awesome"
+                  color="#4988ac"
                   size={30}
                   onPress={() => setModalVisible(false)}
                 />
@@ -464,7 +465,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalDiv: {
-    backgroundColor: "#A9A9A9",
+    backgroundColor: "#1f3e58",
     height: "40%",
     width: "70%",
     position: "absolute",
