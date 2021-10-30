@@ -23,6 +23,9 @@ Follow these steps to install a demo of the application:
 
 3. Click the link that shows up on the top of your screen. This should take you directly to **Expo Go**.
 4. Open Rid of It and get started!
+5. Demo User account:
+   1. demo@email.com
+   2. password123
 
 Rid of It usage:
 
