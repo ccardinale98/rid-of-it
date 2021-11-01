@@ -385,9 +385,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   camera: {
-    height: "75%",
+    height: "90%",
     width: "90%",
-    borderColor: "#A9A9A9",
+    borderColor: "#1f3e58",
     borderWidth: 5,
   },
   takePicture: {
@@ -399,7 +399,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
     height: "100%",
     width: "100%",
   },
