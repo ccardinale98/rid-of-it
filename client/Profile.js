@@ -345,13 +345,17 @@ export default function Profile({ navigation }) {
               </TouchableOpacity>
             </View>
           </Camera>
-          <Button
-            onPress={() => {
-              __takePicture();
-              console.log("pressed");
-            }}
-            title="Capture"
-          />
+          <View style={styles.navDetCam}>
+            <View style={styles.capture}>
+              <Icon
+                name="camera"
+                type="font-awesome"
+                size={60}
+                color="#4988ac"
+                onPress={() => __takePicture()}
+              />
+            </View>
+          </View>
         </SafeAreaView>
       )}
     </ImageBackground>
@@ -372,6 +376,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "#1f3e58",
+  },
+  navDetCam: {
+    width: "100%",
+    height: 100,
+    paddingTop: 10,
+    backgroundColor: "#1f3e58",
+    marginTop: 15,
   },
   camera: {
     height: "75%",
