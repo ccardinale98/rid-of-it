@@ -19,7 +19,7 @@ Follow these steps to install a demo of the application:
 1. On your iPhone device, head to the app store and download **Expo Go**.
 2. Once it is downloaded, open your phone's camera and aim it at this QR code:
 
-![screenshot of application](./client/assets/HQ0E0q5vsC.png)
+![screenshot of application](./client/assets/icyjdcmr3P.png)
 
 3. Click the link that shows up on the top of your screen. This should take you directly to **Expo Go**.
 4. Open Rid of It and get started!
